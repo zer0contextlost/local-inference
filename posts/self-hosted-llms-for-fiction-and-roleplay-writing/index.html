@@ -1,0 +1,82 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Self-Hosted LLMs for Fiction and Roleplay Writing: Hardware, Models, and Stack · Local Inference</title><meta name=description content="Why homelabbers run local LLMs for fiction and roleplay writing instead of a hosted API, what 'uncensored' and 'abliterated' actually mean, and which models r/LocalLLaMA, r/LocalLLM, and r/SillyTavernAI actually recommend for it."><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml href=/index.xml title="Local Inference"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3797749320386385" crossorigin=anonymous></script></head><body><header class=site-header><div class=wrap><a class=brand href=/>Local Inference</a>
+<span class=tagline>Local models, your hardware, your rules.</span><nav class=nav><a href=/about/>About</a></nav></div></header><main class=wrap><article class=post><h1>Self-Hosted LLMs for Fiction and Roleplay Writing: Hardware, Models, and Stack</h1><div class=meta><time datetime=2026-08-09>August 9, 2026</time><ul class=tags><li><a class=tag href=/tags/llm/>llm</a></li><li><a class=tag href=/tags/homelab/>homelab</a></li><li><a class=tag href=/tags/self-hosting/>self-hosting</a></li><li><a class=tag href=/tags/gpu/>gpu</a></li></ul></div><div class=content><p>Hosted chat APIs apply content filters tuned for a general audience, which
+means anything even adjacent to mature fiction — violence, adult themes,
+morally gray characters — can get flagged, refused, or silently softened
+mid-story. That&rsquo;s the main reason r/LocalLLaMA and r/LocalLLM both have a
+whole recurring thread genre around &ldquo;best uncensored model for writing.&rdquo;
+Run the model on
+your own hardware and there&rsquo;s no third-party filter sitting between your
+prompt and the output, no chat log leaving the house, and no surprise
+policy change breaking a story you&rsquo;re partway through.</p><p>This is a rundown of what that setup actually looks like: what
+&ldquo;uncensored&rdquo; means technically, what hardware tier you need for it, and
+which tools people are actually running.</p><h2 id=uncensored-vs-abliterated>&ldquo;Uncensored&rdquo; vs &ldquo;abliterated&rdquo;</h2><p>Two different techniques get lumped under the same label:</p><ul><li><strong>Fine-tuned uncensored models</strong> are retrained on datasets that don&rsquo;t
+include the refusal examples base models are trained on, so they never
+learned to say no in the first place. Dolphin and Hermes are the
+best-known families built this way.</li><li><strong>Abliterated models</strong> start from a normal instruct model and have the
+specific internal direction responsible for refusal mathematically
+identified and removed post-training — the base model&rsquo;s other behavior
+(instruction-following, reasoning) is mostly left intact. You&rsquo;ll see
+this as &ldquo;-abliterated&rdquo; in a model name on Hugging Face.</li></ul><p>Neither one is a jailbreak prompt or a system-prompt trick. Both change
+the weights themselves, which is why they behave consistently instead of
+occasionally snapping back to a refusal.</p><h2 id=picking-a-size-for-your-gpu>Picking a size for your GPU</h2><p>Community consensus tracks pretty closely with general GGUF sizing —
+nothing about creative-writing models needs unusual VRAM headroom, you&rsquo;re
+choosing quant level against the same budget as any other local model:</p><table><thead><tr><th>VRAM</th><th>Comfortable tier</th><th>Notes</th></tr></thead><tbody><tr><td>8 GB</td><td>7-9B, Q4_K_M–Q5_K_M</td><td>fits with headroom for KV cache</td></tr><tr><td>12 GB</td><td>8-14B, Q4–Q5</td><td>sweet spot for a single consumer GPU</td></tr><tr><td>16-24 GB</td><td>13-24B, Q5–Q6</td><td>noticeably better prose coherence over long context</td></tr><tr><td>48 GB+</td><td>70B, Q4–Q5</td><td>multi-GPU or a workstation card; best character/plot consistency</td></tr></tbody></table><p>Rule of thumb across all tiers: budget the quoted quant size for weights,
+then add 15-25% on top for KV cache and context overhead before you call
+a card &ldquo;enough.&rdquo; Newer quant formats like IQ4_XS and the GGUF-V3 imatrix
+builds do a better job preserving activation precision than the older
+plain Q4 quants, which matters most on the smaller end of this table
+where every bit of precision counts.</p><h2 id=models-people-actually-cite>Models people actually cite</h2><p>Recurring names across current LocalLLaMA, LocalLLM, and
+SillyTavern-community roundups, by tier. A recent r/LocalLLM thread asking
+specifically for uncensored-writing recommendations is a good snapshot of
+where consensus sits right now:</p><ul><li><strong>Small (7-9B)</strong> — Dolphin 3.0 Mistral and OpenHermes 2.5 Mistral for
+modest gaming GPUs, plus Anubis-8B, a smaller cut of the Anubis
+roleplay-tuned line below. Best for quick scenes rather than long
+multi-chapter continuity.</li><li><strong>Mid (12-36B)</strong> — MythoMax-L2-13B is the long-running default a lot of
+comparisons still benchmark against; Qwen 3.5 gets recommended broadly
+across use cases including this one; Nous Hermes 2 Yi 34B and Dan&rsquo;s
+PersonalityEngine (24B) both add stronger instruction-following and
+longer-context handling on top of the same roleplay/story focus. TheDrummer&rsquo;s
+Cydonia-24B and Skyfall-31B/36B come up repeatedly as the strongest
+budget picks under ~24GB — the tradeoff noted in practice is a tendency
+to over-pad prose and echo earlier lines back rather than move a scene
+forward.</li><li><strong>Large (70B+)</strong> — Midnight Rose, Midnight Miqu, and Anubis-70B show up
+repeatedly for prose quality and keeping a character consistent across a
+long story, and reportedly hold up reasonably even at lower quants if
+you&rsquo;re VRAM-constrained. Behemoth-ReduX-123B goes past what a single
+consumer GPU handles at reasonable throughput but gets cited for ad hoc
+scenes when the hardware&rsquo;s there.</li><li><strong>MoE (mixture-of-experts)</strong> — GLM-4.5-iceblink (106B total / ~12B
+active parameters) is a newer entrant in these threads: it needs enough
+RAM/VRAM to hold the full model but runs at roughly the <em>active</em> param
+count&rsquo;s speed, which is a different tradeoff than a same-size dense
+model.</li></ul><p><strong>One caution actually worth repeating</strong>: a fine-tune from HauhauCS
+(<code>Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive</code>) that was getting
+recommended in that thread was called out by other commenters as having a
+plagiarism problem with its training data — worth checking a model&rsquo;s
+community reception past the download count before trusting it, not just
+taking the top comment at face value. &ldquo;Heretic&rdquo; (an abliteration tool
+distinct from any one model) came up as the preferred alternative approach
+for de-censoring a base model yourself rather than trusting someone else&rsquo;s
+fine-tune.</p><p>Also worth knowing: r/LocalLLM and r/LocalLLaMA get general questions on
+this topic, but commenters consistently redirect to <strong>r/SillyTavernAI</strong>
+specifically for roleplay-model comparisons — that&rsquo;s the more concentrated
+community if you want ongoing recommendations rather than a one-off
+thread.</p><p>Model rankings in this space move fast and are subjective by nature —
+treat any specific name as a starting point to test against your own
+prompts, not a settled answer.</p><h2 id=the-stack>The stack</h2><p>Three pieces, same pattern regardless of which model you land on:</p><ol><li><strong>Inference backend</strong> — <code>llama.cpp</code>/KoboldCpp or Ollama for GGUF
+models. KoboldCpp is the more common pick specifically in the
+roleplay/story community because its API and context handling were
+built with that use case in mind.</li><li><strong>Frontend</strong> — SillyTavern is the default here: persistent character
+cards, world-info/lorebooks for long-running stories, and a chat UI
+built around back-and-forth roleplay rather than one-shot Q&amp;A.</li><li><strong>Quant format</strong> — GGUF for anything running on llama.cpp-family
+backends; check a model&rsquo;s Hugging Face page for which imatrix/quant
+variant fits your VRAM tier from the table above.</li></ol><p>All three run fine in an LXC container or VM with GPU passthrough on a
+Proxmox box, same pattern as any other GPU workload here — the model
+itself doesn&rsquo;t care that it&rsquo;s virtualized, it just needs the VRAM handed
+through cleanly.</p><h2 id=why-local-over-hosted-here-specifically>Why local over hosted here specifically</h2><p>Beyond content policy, the other reasons that come up constantly in these
+threads: no per-token cost for long writing sessions, no chat history
+sitting on a third party&rsquo;s servers, and no risk of a provider changing
+its acceptable-use policy mid-project and orphaning a long-running story.
+The tradeoff is upfront hardware cost and slower iteration on model
+quality compared to a frontier hosted model — for short-form or
+general-purpose writing that tradeoff often isn&rsquo;t worth it. For a
+long-running, private, mature-themed story, it usually is.</p><p><em>Source: <a href=https://old.reddit.com/r/LocalLLM/comments/1vibj9o/llm_for_nsfw_writing/>r/LocalLLM thread</a> — &ldquo;LLM for NSFW writing&rdquo;</em></p></div></article></main><footer class=site-footer><div class=wrap><p>&copy; 2026 Local Inference. Some links on this site may be affiliate links — if you buy through them we may earn a small commission at no extra cost to you.</p></div></footer></body></html>

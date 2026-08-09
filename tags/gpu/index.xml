@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gpu on Local Inference</title><link>https://llms.zer0contextlost.net/tags/gpu/</link><description>Recent content in Gpu on Local Inference</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 09 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://llms.zer0contextlost.net/tags/gpu/index.xml" rel="self" type="application/rss+xml"/><item><title>Self-Hosted LLMs for Fiction and Roleplay Writing: Hardware, Models, and Stack</title><link>https://llms.zer0contextlost.net/posts/self-hosted-llms-for-fiction-and-roleplay-writing/</link><pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate><guid>https://llms.zer0contextlost.net/posts/self-hosted-llms-for-fiction-and-roleplay-writing/</guid><description>&lt;p&gt;Hosted chat APIs apply content filters tuned for a general audience, which
+means anything even adjacent to mature fiction — violence, adult themes,
+morally gray characters — can get flagged, refused, or silently softened
+mid-story. That&amp;rsquo;s the main reason r/LocalLLaMA and r/LocalLLM both have a
+whole recurring thread genre around &amp;ldquo;best uncensored model for writing.&amp;rdquo;
+Run the model on
+your own hardware and there&amp;rsquo;s no third-party filter sitting between your
+prompt and the output, no chat log leaving the house, and no surprise
+policy change breaking a story you&amp;rsquo;re partway through.&lt;/p&gt;</description></item></channel></rss>
