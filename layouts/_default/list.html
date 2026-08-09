@@ -1,11 +1,20 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
+<section class="intro">
+  <h1>{{ .Title }}</h1>
+</section>
 <section class="post-list">
   {{ range .Pages.ByDate.Reverse }}
   <article class="post-summary">
     <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-    <p class="meta">{{ .Date.Format "January 2, 2006" }}</p>
+    <p class="meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    </p>
     <p>{{ .Description }}</p>
+    {{ if .Params.tags }}
+    <ul class="tags">
+      {{ range .Params.tags }}<li><a class="tag" href="{{ (printf "/tags/%s/" (. | urlize)) | relURL }}">{{ . }}</a></li>{{ end }}
+    </ul>
+    {{ end }}
   </article>
   {{ end }}
 </section>
