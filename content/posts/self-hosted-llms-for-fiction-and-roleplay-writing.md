@@ -1,7 +1,7 @@
 ---
 title: "Self-Hosted LLMs for Fiction and Roleplay Writing: Hardware, Models, and Stack"
 date: 2026-08-09
-description: "Why homelabbers run local LLMs for fiction and roleplay writing instead of a hosted API, what 'uncensored' and 'abliterated' actually mean, and the hardware/quant tiers r/LocalLLaMA and r/LocalLLM converge on for it."
+description: "Why homelabbers run local LLMs for fiction and roleplay writing instead of a hosted API, what 'uncensored' and 'abliterated' actually mean, and which models r/LocalLLaMA, r/LocalLLM, and r/SillyTavernAI actually recommend for it."
 tags: ["llm", "homelab", "self-hosting", "gpu"]
 ---
 
@@ -60,21 +60,50 @@ where every bit of precision counts.
 ## Models people actually cite
 
 Recurring names across current LocalLLaMA, LocalLLM, and
-SillyTavern-community roundups, by tier:
+SillyTavern-community roundups, by tier. A recent r/LocalLLM thread asking
+specifically for uncensored-writing recommendations is a good snapshot of
+where consensus sits right now:
 
 - **Small (7-9B)** — Dolphin 3.0 Mistral and OpenHermes 2.5 Mistral for
-  modest gaming GPUs, plus Gemma abliterated variants. Best for quick
-  scenes rather than long multi-chapter continuity.
-- **Mid (12-34B)** — MythoMax-L2-13B is the long-running default a lot of
+  modest gaming GPUs, plus Anubis-8B, a smaller cut of the Anubis
+  roleplay-tuned line below. Best for quick scenes rather than long
+  multi-chapter continuity.
+- **Mid (12-36B)** — MythoMax-L2-13B is the long-running default a lot of
   comparisons still benchmark against; Qwen 3.5 gets recommended broadly
   across use cases including this one; Nous Hermes 2 Yi 34B and Dan's
   PersonalityEngine (24B) both add stronger instruction-following and
-  longer-context handling on top of the same roleplay/story focus, at the
-  cost of needing a beefier card.
-- **Large (70B+)** — Midnight Rose and Midnight Miqu show up repeatedly
-  for prose quality and keeping a character consistent across a long
-  story, and reportedly hold up reasonably even at lower quants if you're
-  VRAM-constrained.
+  longer-context handling on top of the same roleplay/story focus. TheDrummer's
+  Cydonia-24B and Skyfall-31B/36B come up repeatedly as the strongest
+  budget picks under ~24GB — the tradeoff noted in practice is a tendency
+  to over-pad prose and echo earlier lines back rather than move a scene
+  forward.
+- **Large (70B+)** — Midnight Rose, Midnight Miqu, and Anubis-70B show up
+  repeatedly for prose quality and keeping a character consistent across a
+  long story, and reportedly hold up reasonably even at lower quants if
+  you're VRAM-constrained. Behemoth-ReduX-123B goes past what a single
+  consumer GPU handles at reasonable throughput but gets cited for ad hoc
+  scenes when the hardware's there.
+- **MoE (mixture-of-experts)** — GLM-4.5-iceblink (106B total / ~12B
+  active parameters) is a newer entrant in these threads: it needs enough
+  RAM/VRAM to hold the full model but runs at roughly the *active* param
+  count's speed, which is a different tradeoff than a same-size dense
+  model.
+
+**One caution actually worth repeating**: a fine-tune from HauhauCS
+(`Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive`) that was getting
+recommended in that thread was called out by other commenters as having a
+plagiarism problem with its training data — worth checking a model's
+community reception past the download count before trusting it, not just
+taking the top comment at face value. "Heretic" (an abliteration tool
+distinct from any one model) came up as the preferred alternative approach
+for de-censoring a base model yourself rather than trusting someone else's
+fine-tune.
+
+Also worth knowing: r/LocalLLM and r/LocalLLaMA get general questions on
+this topic, but commenters consistently redirect to **r/SillyTavernAI**
+specifically for roleplay-model comparisons — that's the more concentrated
+community if you want ongoing recommendations rather than a one-off
+thread.
 
 Model rankings in this space move fast and are subjective by nature —
 treat any specific name as a starting point to test against your own
