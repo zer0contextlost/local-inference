@@ -37,3 +37,5 @@ The other setup worth noting: one commenter runs DeepSeek V4 Flash quantized to 
 ## What to watch for
 
 There's also a passing mention of "strix" (AMD's Strix Halo APU line with unified memory) as hardware some commenters expect MoE releases to specifically target, on the theory that unified memory architectures sidestep the VRAM-vs-RAM split entirely. If Qwen or anyone else ships a 35B-A3B or A5B model in the next few months, that's the class of hardware, and the offload pattern described above, worth having ready.
+
+*Source: [r/LocalLLaMA thread](https://old.reddit.com/r/LocalLLaMA/comments/1ve0psn/qwen3827b_announced_alongside_qwen38max/) — "Qwen3.8-27B announced alongside Qwen3.8-Max"*

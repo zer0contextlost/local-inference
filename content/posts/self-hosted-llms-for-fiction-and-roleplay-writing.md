@@ -139,3 +139,5 @@ The tradeoff is upfront hardware cost and slower iteration on model
 quality compared to a frontier hosted model — for short-form or
 general-purpose writing that tradeoff often isn't worth it. For a
 long-running, private, mature-themed story, it usually is.
+
+*Source: [r/LocalLLM thread](https://old.reddit.com/r/LocalLLM/comments/1vibj9o/llm_for_nsfw_writing/) — "LLM for NSFW writing"*
