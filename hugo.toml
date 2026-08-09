@@ -1,0 +1,13 @@
+baseURL = "https://llms.zer0contextlost.net/"
+languageCode = "en-us"
+title = "Local Inference"
+
+[params]
+  description = "Notes on running your own LLMs at home: hardware, quantization, and the tool stack, without a hosted API in the loop."
+  tagline = "Local models, your hardware, your rules."
+
+[taxonomies]
+  tag = "tags"
+
+[markup.goldmark.renderer]
+  unsafe = true
